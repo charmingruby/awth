@@ -1,0 +1,14 @@
+{
+  "name": "awth",
+  "version": "1.0.0",
+  "repository": "https://github.com/charmingruby/awth.git",
+  "author": "charmingruby <mrrubycanal3105@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^2.2.2",
+    "@types/aws-lambda": "^8.10.143",
+    "eslint": "^8.57.0",
+    "typescript": "^5.5.4"
+  }
+}
