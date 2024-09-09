@@ -18,7 +18,7 @@ build:
     exclude:  
       - @aws-sdk/*
     packages: external
-    buildConcurrency: 3
+    buildConcurrency: 10
     sourcemap: false
 
 provider:
@@ -31,6 +31,7 @@ resources:
       Type: AWS::Cognito::UserPool
       Properties:
         UserPoolName:  awthUserPool
+        DeletionProtection: ACTIVE
         MfaConfiguration: "OFF"
         AutoVerifiedAttributes:
           - email
