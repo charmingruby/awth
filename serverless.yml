@@ -4,19 +4,19 @@ service: awth
 
 frameworkVersion: "4"
 
-package: 
+package:
   individually: true
-  patterns: ['package.json'] 
+  patterns: ["package.json"]
 
 build:
   esbuild:
     format: esm
     minify: true
     bundle: true
-    external:  
-      - @aws-sdk/client-s3
-    exclude:  
-      - @aws-sdk/*
+    external:
+      - "@aws-sdk/client-s3"
+    exclude:
+      - "@aws-sdk/*"
     packages: external
     buildConcurrency: 10
     sourcemap: false
@@ -32,7 +32,7 @@ resources:
     UserPool:
       Type: AWS::Cognito::UserPool
       Properties:
-        UserPoolName:  awthUserPool
+        UserPoolName: awthUserPool
         DeletionProtection: ACTIVE
         MfaConfiguration: "OFF"
         AutoVerifiedAttributes:
@@ -73,7 +73,7 @@ resources:
         TokenValidityUnits:
           AccessToken: hours
           RefreshToken: hours
-        AccessTokenValidity: 3 
+        AccessTokenValidity: 3
         RefreshTokenValidity: 1440 # 60 days
 
 functions:
@@ -84,7 +84,7 @@ functions:
           path: /
           method: GET
   signUp:
-    handler: src/lambdas/auth/sign-up.handler
+    handler: src/lambdas/auth/sign-up/index.handler
     events:
       - httpApi:
           path: /auth/sign-up

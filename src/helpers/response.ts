@@ -1,20 +1,24 @@
 import { Formatter } from './formatter'
 
 export class Response {
-  static internalServerError() {
+  static internalServerError(reason?: string) {
+    const message = reason
+      ? `'Internal server error': ${reason}`
+      : 'Internal server error'
+
     return {
       statusCode: 500,
-      body: { message: 'Internal server error' },
+      body: JSON.stringify({ message }),
     }
   }
 
   static createdResponse(entity: string, body: unknown) {
     return {
       statusCode: 201,
-      body: {
+      body: JSON.stringify({
         message: `${Formatter.capitalize(entity)} created successfully`,
         data: body,
-      },
+      }),
     }
   }
 
@@ -24,6 +28,15 @@ export class Response {
       body: JSON.stringify({
         message,
         data: body,
+      }),
+    }
+  }
+
+  static conflictErrorResponse(entity: string) {
+    return {
+      statusCode: 409,
+      body: JSON.stringify({
+        message: `${Formatter.capitalize(entity)} already exists`,
       }),
     }
   }
