@@ -1,4 +1,4 @@
-import { capitalize } from './format'
+import { Formatter } from './formatter'
 
 export class Response {
   static internalServerError() {
@@ -12,7 +12,7 @@ export class Response {
     return {
       statusCode: 201,
       body: {
-        message: `${capitalize(entity)} created successfully`,
+        message: `${Formatter.capitalize(entity)} created successfully`,
         data: body,
       },
     }
@@ -32,7 +32,7 @@ export class Response {
     return {
       statusCode: 404,
       body: JSON.stringify({
-        message: `${capitalize(entity)} not found`,
+        message: `${Formatter.capitalize(entity)} not found`,
       }),
     }
   }

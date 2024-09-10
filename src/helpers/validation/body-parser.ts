@@ -1,4 +1,4 @@
-export function parseJSON(json: string) {
+export function parseBody(json: string) {
   let body: unknown
 
   try {
