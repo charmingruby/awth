@@ -89,3 +89,10 @@ functions:
       - httpApi:
           path: /auth/sign-up
           method: POST
+  accountConfirmation:
+    handler: src/lambdas/auth/account-confirmation/index.handler
+    events:
+      - httpApi:
+          path: /auth/account-confirmation
+          method: POST
+  
