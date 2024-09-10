@@ -24,6 +24,8 @@ build:
 provider:
   name: aws
   runtime: nodejs20.x
+  environment:
+    COGNITO_CLIENT_ID: !Ref UserPoolClient
 
 resources:
   Resources:
@@ -81,3 +83,9 @@ functions:
       - httpApi:
           path: /
           method: GET
+  signUp:
+    handler: src/lambdas/auth/sign-up.handler
+    events:
+      - httpApi:
+          path: /auth/sign-up
+          method: POST
