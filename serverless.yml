@@ -95,4 +95,9 @@ functions:
       - httpApi:
           path: /auth/account-confirmation
           method: POST
-  
+  signIn:
+    handler: src/lambdas/auth/sign-in/index.handler
+    events:
+      - httpApi:
+          path: /auth/sign-in
+          method: POST

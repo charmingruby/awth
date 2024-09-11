@@ -12,6 +12,13 @@ export class Response {
     }
   }
 
+  static unauthorizedError(message?: string) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ message: message || 'Unauthorized' }),
+    }
+  }
+
   static createdResponse(entity: string, body: unknown) {
     return {
       statusCode: 201,
