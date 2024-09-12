@@ -2,19 +2,18 @@ import {
   CognitoIdentityProviderClient,
   InitiateAuthCommand,
 } from '@aws-sdk/client-cognito-identity-provider'
-import { SignInPayload } from '.'
+import { RefreshTokenPayload } from '.'
 import { InvalidCredentialsError } from '@/helpers/errors/invalid-credentials-error'
 
-export class SignInService {
+export class RefreshTokenService {
   constructor(private readonly cognitoClient: CognitoIdentityProviderClient) {}
 
-  async execute(payload: SignInPayload) {
+  async execute(payload: RefreshTokenPayload) {
     const cmd = new InitiateAuthCommand({
       ClientId: process.env.COGNITO_CLIENT_ID,
-      AuthFlow: 'USER_PASSWORD_AUTH',
+      AuthFlow: 'REFRESH_TOKEN_AUTH',
       AuthParameters: {
-        USERNAME: payload.email,
-        PASSWORD: payload.password,
+        REFRESH_TOKEN: payload.refreshToken,
       },
     })
 

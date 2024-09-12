@@ -101,3 +101,9 @@ functions:
       - httpApi:
           path: /auth/sign-in
           method: POST
+  refreshToken:
+    handler: src/lambdas/auth/refresh-token/index.handler
+    events:
+      - httpApi:
+          path: /auth/refresh-token
+          method: POST          
