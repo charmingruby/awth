@@ -24,8 +24,24 @@ build:
 provider:
   name: aws
   runtime: nodejs20.x
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 
+            - cognito-idp:AdminGetUser
+          Resource: !GetAtt UserPool.Arn
   environment:
     COGNITO_CLIENT_ID: !Ref UserPoolClient
+    COGNITO_USER_POOL_ID: !Ref UserPool
+  httpApi:
+    authorizers:
+      CognitoAuthorizer:
+        type: jwt
+        identitySource: $request.header.Authorization
+        issuerUrl: !GetAtt UserPool.ProviderURL
+        audience:
+          - !Ref UserPoolClient
 
 resources:
   Resources:
@@ -106,4 +122,12 @@ functions:
     events:
       - httpApi:
           path: /auth/refresh-token
-          method: POST          
+          method: POST                  
+  profile:
+    handler: src/lambdas/accounts/profile/index.handler
+    events:
+      - httpApi:
+          path: /profile
+          method: GET
+          authorizer: 
+            name: CognitoAuthorizer
