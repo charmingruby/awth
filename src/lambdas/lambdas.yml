@@ -1,0 +1,51 @@
+functions:
+  hello:
+    handler: src/lambdas/hello/index.handler
+    events:
+      - httpApi:
+          path: /
+          method: GET
+  signUp:
+    handler: src/lambdas/auth/sign-up/index.handler
+    events:
+      - httpApi:
+          path: /auth/sign-up
+          method: POST
+  accountConfirmation:
+    handler: src/lambdas/auth/account-confirmation/index.handler
+    events:
+      - httpApi:
+          path: /auth/account-confirmation
+          method: POST
+  signIn:
+    handler: src/lambdas/auth/sign-in/index.handler
+    events:
+      - httpApi:
+          path: /auth/sign-in
+          method: POST
+  refreshToken:
+    handler: src/lambdas/auth/refresh-token/index.handler
+    events:
+      - httpApi:
+          path: /auth/refresh-token
+          method: POST
+  forgotPassword:
+    handler: src/lambdas/auth/forgot-password/index.handler
+    events:
+      - httpApi:
+          path: /auth/forgot-password
+          method: POST
+  resetPassword:
+    handler: src/lambdas/auth/reset-password/index.handler
+    events:
+      - httpApi:
+          path: /auth/reset-password
+          method: POST
+  profile:
+    handler: src/lambdas/accounts/profile/index.handler
+    events:
+      - httpApi:
+          path: /profile
+          method: GET
+          authorizer: 
+            name: CognitoAuthorizer

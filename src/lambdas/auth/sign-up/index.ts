@@ -8,10 +8,10 @@ import { extractSchemaError } from '@/helpers/validation/extract-schema-error'
 import { SignUpService } from './service'
 
 const signUpSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
+  email: z.string({ required_error: 'email is required' }).email(),
+  password: z.string({ required_error: 'password is required' }).min(8),
+  firstName: z.string({ required_error: 'firstName is required' }).min(1),
+  lastName: z.string({ required_error: 'lastName is required' }).min(1),
 })
 
 export type SignUpPayload = z.infer<typeof signUpSchema>

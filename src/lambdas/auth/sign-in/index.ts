@@ -13,8 +13,8 @@ import {
 import { InvalidCredentialsError } from '@/helpers/errors/invalid-credentials-error'
 
 const signInSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1),
+  email: z.string({ required_error: 'email is required' }).email(),
+  password: z.string({ required_error: 'password is required' }).min(1),
 })
 
 export type SignInPayload = z.infer<typeof signInSchema>

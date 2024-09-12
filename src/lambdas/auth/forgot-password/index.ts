@@ -3,28 +3,25 @@ import { parseBody } from '@/helpers/validation/body-parser'
 import { extractSchemaError } from '@/helpers/validation/extract-schema-error'
 import { APIGatewayProxyEventV2 } from 'aws-lambda'
 import { z } from 'zod'
-import { AccountConfirmationService } from './service'
 import { cognitoClient } from '@/libs/cognito-client'
 import {
-  CodeMismatchException,
-  ExpiredCodeException,
+  NotAuthorizedException,
+  UserNotConfirmedException,
   UserNotFoundException,
 } from '@aws-sdk/client-cognito-identity-provider'
+import { ForgotPasswordService } from './service'
 
-const accountConfirmationSchema = z.object({
+const forgotPasswordSchema = z.object({
   email: z.string({ required_error: 'email is required' }).email(),
-  code: z.string({ required_error: 'code is required' }).min(1),
 })
 
-export type AccountConfirmationPayload = z.infer<
-  typeof accountConfirmationSchema
->
+export type ForgotPasswordPayload = z.infer<typeof forgotPasswordSchema>
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {
     const body = parseBody(event.body)
 
-    const validationRes = accountConfirmationSchema.safeParse(body)
+    const validationRes = forgotPasswordSchema.safeParse(body)
     if (!validationRes.success) {
       const err = extractSchemaError(validationRes.error.issues)
       return Response.badRequestErrorResponse(err)
@@ -32,22 +29,22 @@ export async function handler(event: APIGatewayProxyEventV2) {
 
     const { data } = validationRes
 
-    await new AccountConfirmationService(cognitoClient).execute(data)
+    await new ForgotPasswordService(cognitoClient).execute(data)
 
-    return Response.okResponse('Account confirmed successfully')
+    return Response.okResponse('Email verification sent')
   } catch (err) {
     console.error(err)
 
     if (err instanceof UserNotFoundException) {
-      return Response.badRequestErrorResponse('Account not found')
+      return Response.unauthorizedError()
     }
 
-    if (err instanceof CodeMismatchException) {
-      return Response.badRequestErrorResponse('Invalid confirmation code')
+    if (err instanceof NotAuthorizedException) {
+      return Response.unauthorizedError()
     }
 
-    if (err instanceof ExpiredCodeException) {
-      return Response.badRequestErrorResponse('Expired confirmation code')
+    if (err instanceof UserNotConfirmedException) {
+      return Response.unauthorizedError()
     }
 
     return Response.internalServerError()
